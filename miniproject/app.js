@@ -46,6 +46,29 @@ const server =  http.createServer((req, res) =>{
 
 });
 
+server.on('request', (req, res) => {
+    if (req.method === 'POST' && req.url === '/') {
+        let body = '';
+        req.on('data', (chunk) => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            const newMessage = decodeURIComponent(body.split('=')[1]);
+            updateMessages(newMessage, (err) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+                res.writeHead(302, { 'Location': '/' });
+                res.end();
+            });
+        });
+    }
+});
+
+
+
 server.listen(3000,() =>{
     console.log('Server is running on port 3000');
 });
