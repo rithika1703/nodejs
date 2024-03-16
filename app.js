@@ -6,8 +6,13 @@ const querystring = require('querystring');
 function readMessages(callback) {
     fs.readFile('messages.txt', 'utf8', (err, data) => {
         if (err) {
-            console.error('Error reading messages:', err);
-            callback(err, null);
+            if (err.code === 'ENOENT') {
+                // File doesn't exist, return empty array
+                callback(null, []);
+            } else {
+                // Other error, return error
+                callback(err, null);
+            }
             return;
         }
         const messages = data.split('\n').filter(message => message.trim() !== '');
@@ -17,9 +22,10 @@ function readMessages(callback) {
 
 // Function to update messages in the file
 function updateMessages(newMessage, callback) {
-    fs.appendFile('messages.txt', newMessage + '\n', 'utf8', (err) => {
+    const words = newMessage.split(' ').filter(word => word.trim() !== '');
+    const formattedMessage = words.join(' + ');
+    fs.appendFile('messages.txt', formattedMessage + '\n', 'utf8', (err) => {
         if (err) {
-            console.error('Error updating messages:', err);
             callback(err);
             return;
         }
