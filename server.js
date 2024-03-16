@@ -1,18 +1,26 @@
 const http = require('http');
 
-const server = http.createServer((req, res) =>{
-    console.log(req.url, req.method,req.headers);
-    res.setHeader('Content-Type', 'text/html');
-    if(url === '/home'){
-        res.end('welcome home');
-    }else if(url ==='about'){
-        res.end('welcome to About Us page')
-    }else if(url === 'node'){
-        res.end('welcom to my Node.js project');
+const server = http.createServer((req, res) => {
+    // Extract the URL from the request
+    const url = req.url;
+
+    // Set the response headers
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+
+    // Based on the URL, send custom responses
+    if (url === '/home') {
+        res.end('Welcome home');
+    } else if (url === '/about') {
+        res.end('Welcome to About Us page');
+    } else if (url === '/node') {
+        res.end('Welcome to my Node.js project');
+    } else {
+        // For any other URLs, send a generic response
+        res.end('Invalid URL');
     }
 });
 
-server.listen(4000,() =>{
-    console.log('server is running on port 4000');
-})
-
+// Start the server and make it listen on port 3000
+server.listen(4000, () => {
+    console.log('Server is running on port 4000');
+});
