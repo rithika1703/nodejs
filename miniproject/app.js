@@ -30,6 +30,17 @@ const server =  http.createServer((req, res) =>{
         <html>
         <head><title> Messages </title></head>
         <body> <h1> Messages </h1></body>
-        `
+        <ul>
+        `;
+        htmlContent +=`
+        ,<ul>
+        <form method ="post" action="/">
+        <input type ="text" name="newMessage" Placeholder="Enter new message">
+        <button type= "submit"> Add Message</button>
+        </form>
+        </body>
+        </html>`;
+        res.writeHead(200,{'Content-Type':'text/html'});
+        res.end(htmlContent);
     })
 })
