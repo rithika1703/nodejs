@@ -33,6 +33,8 @@ function updateMessages(newMessage, callback) {
     });
 }
 
+
+
 // Create an HTTP server
 const server = http.createServer((req, res) => {
     if (req.method === 'GET' && req.url === '/') {
