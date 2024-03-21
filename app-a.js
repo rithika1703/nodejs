@@ -15,3 +15,12 @@ app.get('/add-product', (req, res) => {
     `);
 });
 
+app.post('/add-product', (req, res) => {
+    const productName = req.body.productName;
+    const productSize = req.body.productSize; // Retrieve product size from form data
+
+    console.log('Product Name:', productName);
+    console.log('Product Size:', productSize); // Log product size to console
+
+    res.redirect('/'); // Redirect to home page or any other page
+});
