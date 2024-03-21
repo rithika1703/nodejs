@@ -36,3 +36,4 @@ const requestHandler = (req, res) => {
 };
 
 module.exports = requestHandler; // Fixed typo: module.exportss -> module.exports
+  
