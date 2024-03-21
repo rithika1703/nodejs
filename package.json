@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "start-server":"node app.js"
+    "start-server": "node app.js"
   },
   "author": "rithika",
-  "license": "ISC"
-  
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.0.0-beta.2"
+  }
 }
