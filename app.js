@@ -24,3 +24,7 @@ app.post('/add-product', (req, res) => {
 
     res.redirect('/'); // Redirect to home page or any other page
 });
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
