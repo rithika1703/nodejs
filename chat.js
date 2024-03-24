@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static(_ _ dirname +'/public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/login',(req,res) => {
     res.send(`<form action = "/login" method="post"
@@ -54,7 +54,7 @@ app.get('/message',(req,res) => {
         const message = data.split('/n');
         let formattedMessages = '';
         message.forEach(msg =>{
-            if (msg.trim()! == ''){
+            if (msg.trim() !== ''){
                 formattedMessages += `${msg},<br>`;
             }
         });
