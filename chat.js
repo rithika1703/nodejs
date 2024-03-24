@@ -1,12 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const session = require('express-session');
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static(__dirname + '/public'));
+app.use(session({
+    secret :'your-secret-key',
+    resave: false,
+    saveUninitialized : true
+}));
 
 app.get('/login',(req,res) => {
     res.send(`<form action = "/login" method="post"
