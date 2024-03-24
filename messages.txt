@@ -9,3 +9,8 @@ my + name + is + rithika
 my + code
 my+code
 my + code
+rithika@gmail.com: hi
+rithika@gmail.com: hi
+rithika@gmail.com: hi
+rithika@gmail.com: hi
+yash@gmail.com: hello there

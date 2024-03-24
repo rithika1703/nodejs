@@ -6,27 +6,35 @@ const session = require('express-session');
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({extended:true}));
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-    secret :'your-secret-key',
+    secret: 'your-secret-key',
     resave: false,
-    saveUninitialized : true
+    saveUninitialized: true
 }));
 
-app.get('/login',(req,res) => {
-    res.send(`<form action = "/login" method="post"
-    <input type="text" name="username" placeholder="enter your name">
-        <button type = "submit">login</button>
-        </form>`);
+// Routes
+// Login route to show the form
+app.get('/login', (req, res) => {
+    res.send(`
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Enter your username">
+            <button type="submit">Login</button>
+        </form>
+    `);
 });
 
-app.post('/login',(req,res) => {
+// Handling login form submission
+app.post('/login', (req, res) => {
     const username = req.body.username;
-    res.send(`<script>localStorage.setItem('username','${username}')window.location.href="/";</script>`);
+    req.session.username = username; // Storing username in session
+    res.redirect('/');
 });
 
+// Show send message form
 app.get('/', (req, res) => {
-    const username = localStorage.getItem('username');
+    const username = req.session.username;
     if (!username) {
         res.redirect('/login');
         return;
@@ -39,35 +47,44 @@ app.get('/', (req, res) => {
     `);
 });
 
-app.post('/send-message',(req,res) => {
-    const username = localStorage.getItem('username');
-    if(!username) {
+// Handling send message form submission
+app.post('/send-message', (req, res) => {
+    const username = req.session.username;
+    if (!username) {
         res.redirect('/login');
         return;
     }
     const message = req.body.message;
-    fs.appendFileSync('message.txt',`${username}: ${message}\n`);
-    res.send('Message sent successfully!');
+    // Store message in file
+    fs.appendFile('messages.txt', `${username}: ${message}\n`, (err) => {
+        if (err) {
+            res.send('Error storing message.');
+            return;
+        }
+        res.send('Message sent successfully!');
+    });
 });
 
-app.get('/message',(req,res) => {
-    fs.readFile('message.txt','utf8',(err,data) => {
-        if(err) {
+// Reading and displaying messages from file
+app.get('/messages', (req, res) => {
+    fs.readFile('messages.txt', 'utf8', (err, data) => {
+        if (err) {
             res.send('Error reading messages.');
             return;
         }
-        const message = data.split('/n');
+        // Splitting data into lines and displaying
+        const messages = data.split('\n');
         let formattedMessages = '';
-        message.forEach(msg =>{
-            if (msg.trim() !== ''){
-                formattedMessages += `${msg},<br>`;
+        messages.forEach(msg => {
+            if (msg.trim() !== '') {
+                formattedMessages += `${msg}<br>`;
             }
         });
         res.send(formattedMessages);
     });
 });
 
-app.listen(port,() => {
-    console.log(`server is running on http://localhost:3000`);
-
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
