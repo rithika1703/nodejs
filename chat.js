@@ -33,3 +33,36 @@ app.get('/', (req, res) => {
         </form>
     `);
 });
+
+app.post('/send-message',(req,res) => {
+    const username = localStorage.getItem('username');
+    if(!username) {
+        res.redirect('/login');
+        return;
+    }
+    const message = req.body.message;
+    fs.appendFileSync('message.txt',`${username}: ${message}\n`);
+    res.send('Message sent successfully!');
+});
+
+app.get('/message',(req,res) => {
+    fs.readFile('message.txt','utf8',(err,data) => {
+        if(err) {
+            res.send('Error reading messages.');
+            return;
+        }
+        const message = data.split('/n');
+        let formattedMessages = '';
+        message.forEach(msg =>{
+            if (msg.trim()! == ''){
+                formattedMessages += `${msg},<br>`;
+            }
+        });
+        res.send(formattedMessages);
+    });
+});
+
+app.listen(port,() => {
+    console.log(`server is running on http://localhost:3000`);
+
+});
