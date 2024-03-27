@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Us Form</title>
+  <style>
+    #successMessage {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/aboutus">About Us</a></li>
+      <li><a href="/services">Services</a></li>
+      <li><a href="/contactus">Contact Us</a></li> <!-- New button for Contact Us -->
+    </ul>
+  </nav>
+
+  <div id="contactForm">
+    <h2>Contact Us</h2>
+    <form id="myForm" onsubmit="submitForm(event)" action="/success">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name"><br>
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <div id="successMessage">
+    <h2>Form Successfully Filled</h2>
+  </div>
+
+  <script>
+    function submitForm(event) {
+      event.preventDefault();
+      var formData = new FormData(document.getElementById("myForm"));
+      // Assuming form submission is successful without server interaction
+      document.getElementById("contactForm").style.display = "none";
+      document.getElementById("successMessage").style.display = "block";
+      // Redirect to /success after 2 seconds
+      setTimeout(function() {
+        window.location.href = "/success";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
